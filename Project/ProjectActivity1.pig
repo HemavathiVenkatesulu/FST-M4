@@ -1,0 +1,14 @@
+inputDialouges4 = LOAD 'hdfs:///user/hemavathiv/episode4_dialouges.txt' USING PigStorage('\t') AS (name:chararray,line:chararray);
+inputDialouges5 = LOAD 'hdfs:///user/hemavathiv/episode5_dialouges.txt' USING PigStorage('\t') AS (name:chararray,line:chararray);
+inputDialouges6 = LOAD 'hdfs:///user/hemavathiv/episode6_dialouges.txt' USING PigStorage('\t') AS (name:chararray,line:chararray);
+ranked4 = RANK inputDialouges4;
+OnlyDialouges4 = FILTER ranked4 BY (rank_inputDialouges4 > 2);
+ranked5 = RANK inputDialouges5;
+OnlyDialouges5 = FILTER ranked5 BY (rank_inputDialouges5 > 2);
+ranked6 = RANK inputDialouges6;
+OnlyDialouges6 = FILTER ranked6 BY (rank_inputDialouges6 > 2);
+inputData = UNION OnlyDialouges4, OnlyDialouges5, OnlyDialouges6;
+groupByname = GROUP inputData BY name;
+names = FOREACH groupByname GENERATE $0 as name, COUNT($1) as no_of_lines;
+namesOrdered = ORDER names BY no_of_lines DESC;
+STORE namesOrdered INTO 'hdfs:///user/hemavathiv/pigactivity1' USING PigStorage('\t');

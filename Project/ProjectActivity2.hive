@@ -1,0 +1,16 @@
+CREATE TABLE episode4 (name STRING, line STRING)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' TBLPROPERTIES ("skip.header.line.count"="2");
+
+CREATE TABLE episode5 (name STRING, line STRING)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' TBLPROPERTIES ("skip.header.line.count"="2");
+
+CREATE TABLE episode6 (name STRING, line STRING)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' TBLPROPERTIES ("skip.header.line.count"="2");
+
+LOAD DATA LOCAL INPATH '/root/inputs/episode4_dialouges.txt' INTO TABLE episode4;
+LOAD DATA LOCAL INPATH '/root/inputs/episode5_dialouges.txt' INTO TABLE episode5;
+LOAD DATA LOCAL INPATH '/root/inputs/episode6_dialouges.txt' INTO TABLE episode6;
+
+SELECT name, COUNT(name) AS no_of_lines from episode4 GROUP BY name ORDER BY no_of_lines DESC;
+SELECT name, COUNT(name) AS no_of_lines from episode5 GROUP BY name ORDER BY no_of_lines DESC;
+SELECT name, COUNT(name) AS no_of_lines from episode6 GROUP BY name ORDER BY no_of_lines DESC;
